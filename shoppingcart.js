@@ -88,7 +88,7 @@ function addRowToBasket(productID){
             changeCountofproductInBasket(inputElement);
         })
         // when a new row added
-        updateproductCount(product.id,inputElem.value);   
+        updateproductCount(product.id,1);   
     }  
 
 }
@@ -177,7 +177,7 @@ function basketHandler(){
 }
 // purchase button
 purchaseElem.addEventListener('click',function(){
-    userBasket=[];
+    
     let basketitemElems= $.querySelectorAll('.basket-item');
     basketitemElems.forEach(function(basketItem){
         basketItem.remove();
@@ -187,8 +187,11 @@ purchaseElem.addEventListener('click',function(){
         basketincludesElem.innerHTML= 0;
         totalpriceElem.innerHTML= 0;
         basketHandler();
+        userBasket=[];
+        console.log(userBasket);
     } 
     else{
         basketHandler();
+        userBasket=[];
     }  
 })
