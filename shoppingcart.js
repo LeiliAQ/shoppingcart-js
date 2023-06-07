@@ -20,31 +20,8 @@ function addProducts(){
     allProducts.forEach(addaProduct);
 }
 function addaProduct(product){
-    let newProductTitle= $.createElement('h1') ;
-    newProductTitle.innerHTML= product.title;
-    let newProductimg= $.createElement('img');
-    newProductimg.src=product.img;
-    let newProductPrice= $.createElement('p');
-    newProductPrice.innerText=product.price;
-    newProductPrice.classList.add('price');
-    let newdivElem= $.createElement('div') ;
-    newdivElem.classList.add('lastrow');
-    let newAddbtn= $.createElement('button');
-    newAddbtn.innerText='Add To Cart';
-    newAddbtn.classList.add('add');
-    let newProductdiv= $.createElement('div') ;
-    newProductdiv.classList.add('product');
-    // appendChild
-    newdivElem.appendChild(newProductPrice);
-    newdivElem.appendChild(newAddbtn);
-    newProductdiv.appendChild(newProductTitle);
-    newProductdiv.appendChild(newProductimg);
-    newProductdiv.appendChild(newdivElem);
-    productsElem.appendChild(newProductdiv);
-    // if Add To Cart button clicked
-    newAddbtn.addEventListener('click',function(){
-        addRowToBasket(product.id);
-    });
+    // create list of products// if Add To Cart button clicked// refactor by insertAdjacentHTML
+    productsElem.insertAdjacentHTML('beforeend','<div class="product"><h1>'+product.title +'</h1><img src="'+product.img+'"><div class="lastrow"><p class="price">'+product.price+'</p><button class="add" onclick="addRowToBasket('+product.id+')">Add To Cart</button></div></div>')
 }
 // add all products to page
 addProducts();
@@ -58,7 +35,6 @@ function addRowToBasket(productID){
         return itemInBasket.title=== product.title;
         })
      //  if item is repititive, its count in basket will increases 1
-     
      if(alreadyInBasket){
         let countInputs= $.querySelectorAll('.change-count');
         countInputs.forEach(function(item){
@@ -70,13 +46,15 @@ function addRowToBasket(productID){
         })    
     } 
     // this item is not repitive and can be added to basket
+    addRepetitiveItemtoBasket(product,alreadyInBasket); 
+}
+function addRepetitiveItemtoBasket(product,alreadyInBasket){
     if(!alreadyInBasket){
         userBasket.push(product);
         // create a row in shopping cart and mremove btn(returnbuttonEle) and basketItem and inputElem
         let newArray= addARowToCart(product);
         let buttonElem=newArray[0]; //remove btn
         let basketItem=newArray[1]; // ul containing the added product
-        let inputElem= newArray[2]; //input element for count 
         // if remove button(buttonElem) clicked
         buttonElem.addEventListener('click',function(){
             updateproductCount(product.id,0);
@@ -89,8 +67,7 @@ function addRowToBasket(productID){
         })
         // when a new row added
         updateproductCount(product.id,1);   
-    }  
-
+    }    
 }
 function removefromBasket(productID,basketItem){
     let index= userBasket.findIndex(function(item){
@@ -99,7 +76,6 @@ function removefromBasket(productID,basketItem){
     userBasket.splice(index,1);
     basketItem.remove();
 }
-
 function updateproductCount(productID,newValue){
     // console.log('productid:'+productID+ 'count:'+newValue);
     let index= userBasket.findIndex(function(item){
@@ -121,35 +97,13 @@ function calculateTotalPrice(){
 }
 // add a row to the basket
 function addARowToCart(product){
-        let basketItem= $.createElement('ul');
-        basketItem.classList.add('basket-item');
-        let firstliElem= $.createElement('li');
-        let imgElem= $.createElement('img');
-        imgElem.src=product.img;
-        let spanElem= $.createElement('span');
-        spanElem.innerHTML= product.title;
-        firstliElem.appendChild(imgElem);
-        firstliElem.appendChild(spanElem);
-        let secondliElem= $.createElement('li');
-        secondliElem.classList.add('basket-price');
-        secondliElem.innerHTML=product.price  ;
-        thirdliElem= $.createElement('li');
-        inputElem= $.createElement('input');
-        inputElem.setAttribute('type','number');
-        inputElem.classList.add('change-count');
-        inputElem.setAttribute('min','0');
-        inputElem.setAttribute('data-title',product.title);
-        inputElem.value=product.count;
-        buttonElem= $.createElement('button');
-        buttonElem.classList.add('remove');
-        buttonElem.innerHTML='REMOVE';
-        thirdliElem.appendChild(inputElem);
-        thirdliElem.appendChild(buttonElem);
-        basketItem.appendChild(firstliElem);
-        basketItem.appendChild(secondliElem);
-        basketItem.appendChild(thirdliElem);
-        basketElem.appendChild(basketItem);
-        return [buttonElem,basketItem,inputElem];
+        basketElem.insertAdjacentHTML('beforeend','<ul class="basket-item"><li><img src="'+product.img +'"><span>'+product.title +'</span></li><li class="basket-price">'+product.price +'</li><li><input type="number" class="change-count" min="0" data-title="'+product.title +'" value="'+product.count +'"><button class="remove">REMOVE</button></li></ul>');
+        console.log(product.count);
+        const buttonElems= $.querySelectorAll('.remove');
+        let buttonElem= buttonElems[buttonElems.length-1];
+        const basketItems= $.querySelectorAll('.basket-item');
+        let basketItem= basketItems[basketItems.length-1];
+        return [buttonElem,basketItem];       
 }
 // codes will run if count of the item in basket has changed
 function changeCountofproductInBasket(inputElement){
