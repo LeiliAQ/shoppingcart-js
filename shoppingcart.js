@@ -98,7 +98,6 @@ function calculateTotalPrice(){
 // add a row to the basket
 function addARowToCart(product){
         basketElem.insertAdjacentHTML('beforeend','<ul class="basket-item"><li><img src="'+product.img +'"><span>'+product.title +'</span></li><li class="basket-price">'+product.price +'</li><li><input type="number" class="change-count" min="0" data-title="'+product.title +'" value="'+product.count +'"><button class="remove">REMOVE</button></li></ul>');
-        console.log(product.count);
         const buttonElems= $.querySelectorAll('.remove');
         let buttonElem= buttonElems[buttonElems.length-1];
         const basketItems= $.querySelectorAll('.basket-item');
@@ -111,6 +110,7 @@ function changeCountofproductInBasket(inputElement){
         let changedCountProduct= userBasket.find(function(pr){
             return pr.title=== inputElement.dataset.title ;  
         })
+        console.log(changedCountProduct);
         if(inputElement.value==0){
             // product from userBasket and item from DOM should be removed
             let shoulBeRemovedItem= inputElement.parentElement.parentElement; // ul.basket-item 
@@ -131,7 +131,6 @@ function basketHandler(){
 }
 // purchase button
 purchaseElem.addEventListener('click',function(){
-    
     let basketitemElems= $.querySelectorAll('.basket-item');
     basketitemElems.forEach(function(basketItem){
         basketItem.remove();
@@ -142,10 +141,12 @@ purchaseElem.addEventListener('click',function(){
         totalpriceElem.innerHTML= 0;
         basketHandler();
         userBasket=[];
-        console.log(userBasket);
     } 
     else{
         basketHandler();
         userBasket=[];
     }  
+    allProducts.forEach(function(item){
+        item.count=1;
+    })
 })
