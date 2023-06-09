@@ -14,14 +14,41 @@ const totalpriceElem= $.querySelector('.total-price');
 //  basket icon
 const basketiconElem= $.querySelector('.basketicon');
 const basketincludesElem= $.querySelector('.basketincludes');
-
+// documentfragment
+const productsFragment= $.createDocumentFragment();
 // 
 function addProducts(){
     allProducts.forEach(addaProduct);
 }
 function addaProduct(product){
     // create list of products// if Add To Cart button clicked// refactor by insertAdjacentHTML
-    productsElem.insertAdjacentHTML('beforeend','<div class="product"><h1>'+product.title +'</h1><img src="'+product.img+'"><div class="lastrow"><p class="price">'+product.price+'</p><button class="add" onclick="addRowToBasket('+product.id+')">Add To Cart</button></div></div>')
+    // productsElem.insertAdjacentHTML('beforeend','<div class="product"><h1>'+product.title +'</h1><img src="'+product.img+'"><div class="lastrow"><p class="price">'+product.price+'</p><button class="add" onclick="addRowToBasket('+product.id+')">Add To Cart</button></div></div>')
+    let newProductTitle= $.createElement('h1') ;
+    newProductTitle.innerHTML= product.title;
+    let newProductimg= $.createElement('img');
+    newProductimg.src=product.img;
+    let newProductPrice= $.createElement('p');
+    newProductPrice.innerText=product.price;
+    newProductPrice.classList.add('price');
+    let newdivElem= $.createElement('div') ;
+    newdivElem.classList.add('lastrow');
+    let newAddbtn= $.createElement('button');
+    newAddbtn.innerText='Add To Cart';
+    newAddbtn.classList.add('add');
+    let newProductdiv= $.createElement('div') ;
+    newProductdiv.classList.add('product');
+    // appendChild
+    newdivElem.appendChild(newProductPrice);
+    newdivElem.appendChild(newAddbtn);
+    newProductdiv.appendChild(newProductTitle);
+    newProductdiv.appendChild(newProductimg);
+    newProductdiv.appendChild(newdivElem);
+    productsFragment.appendChild(newProductdiv);
+    // if Add To Cart button clicked
+    newAddbtn.addEventListener('click',function(){
+        addRowToBasket(product.id);
+    });
+    productsElem.appendChild(productsFragment);
 }
 // add all products to page
 addProducts();
