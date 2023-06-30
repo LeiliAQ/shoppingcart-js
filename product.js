@@ -237,3 +237,17 @@ function displayBasket(){
 }
 // display basket it may be empty or get data from localStorage
 displayBasket();
+// code for add to cart button 
+// ////
+
+function addtocartHandler(){
+    let product= allProducts.find(function(pr){
+        return pr.id === Number(paramsID);
+    })
+    console.log(product);
+    addRowToBasket(product.id);
+    calculateTotalPrice();
+}
+addtocartElem=$.querySelector('.add');
+addtocartElem.addEventListener('click',addtocartHandler);
+

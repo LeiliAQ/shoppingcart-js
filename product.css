@@ -224,6 +224,22 @@ footer{
         width: 770px;
     }
 }
+/* add to cart button: for this product */
+.add{
+    padding: 10px;
+    background: transparent;
+    color: var(--colorsnow);
+    border: 1px solid var(--colorsnow);
+    font-size: 1em;
+    cursor: pointer;
+    width: 6em;
+}
+.h1-addtocart{
+    display: flex;
+}
+.h1-addtocart>h1{
+    margin-right: 20px;
+}
 /* ????????????????????? */
 /* @media(max-width:300px){
     .productscart-container{
@@ -234,5 +250,3 @@ footer{
         flex-direction: column;
     }
 } */
-
-
