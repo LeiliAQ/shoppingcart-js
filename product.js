@@ -1,14 +1,47 @@
+// add properties of the product by its id in search query
 let allProducts= [
-    {id:1, title:'T-Shirt', price:10 ,img:'images/tshirt.jfif',count:1},
-    {id:2, title:'Skirt', price:10 ,img:'images/skirt.jpg',count:1},
-    {id:3, title:'Shoes', price:10 ,img:'images/shoes.jfif',count:1},
-    {id:4, title:'dress', price:10 ,img:'images/dress.webp',count:1},
-    {id:5, title:'top', price:10 ,img:'images/top.webp',count:1},
-    {id:6, title:'gloves', price:10 ,img:'images/gloves.jfif',count:1},
-    {id:7, title:'scraf', price:10 ,img:'images/scarf.jfif',count:1},
-    {id:8, title:'pants', price:10 ,img:'images/pants.jfif',count:1},
+    {id:1, title:'T-Shirt', price:10 ,img:'images/tshirt.jfif',count:1, desc:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quia velit delectus est quisquam hic impedit cupiditate optio aspernatur, eius provident, aliquam possimus, alias dignissimos officiis cum numquam veniam necessitatibus beatae pariatur maiores ad. Sapiente animi, magni perferendis inventore ipsam earum!"},
+    {id:2, title:'Skirt', price:10 ,img:'images/skirt.jpg',count:1, desc:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, harum dolorem ipsam sint quibusdam sed quis aperiam nisi reprehenderit consequatur aliquid debitis, magni accusamus nihil et consequuntur similique asperiores. Dolorem ducimus modi libero, eligendi voluptas corporis. Deleniti dolorum ullam veniam!"},
+    {id:3, title:'Shoes', price:10 ,img:'images/shoes.jfif',count:1, desc:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam, omnis id quasi quae, in mollitia sunt illum repudiandae nisi ullam sit quibusdam facilis ipsa fugiat, ratione provident veniam totam tempora fugit reiciendis commodi earum voluptatum? Commodi magni illum atque illo?"},
+    {id:4, title:'dress', price:10 ,img:'images/dress.webp',count:1, desc:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, harum dolorem ipsam sint quibusdam sed quis aperiam nisi reprehenderit consequatur aliquid debitis, magni accusamus nihil et consequuntur similique asperiores. Dolorem ducimus modi libero, eligendi voluptas corporis. Deleniti dolorum ullam veniam!"},
+    {id:5, title:'top', price:10 ,img:'images/top.webp',count:1, desc:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quia velit delectus est quisquam hic impedit cupiditate optio aspernatur, eius provident, aliquam possimus, alias dignissimos officiis cum numquam veniam necessitatibus beatae pariatur maiores ad. Sapiente animi, magni perferendis inventore ipsam earum!"},
+    {id:6, title:'gloves', price:10 ,img:'images/gloves.jfif',count:1, desc:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quia velit delectus est quisquam hic impedit cupiditate optio aspernatur, eius provident, aliquam possimus, alias dignissimos officiis cum numquam veniam necessitatibus beatae pariatur maiores ad. Sapiente animi, magni perferendis inventore ipsam earum!"},
+    {id:7, title:'scraf', price:10 ,img:'images/scarf.jfif',count:1, desc:"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Magnam, omnis id quasi quae, in mollitia sunt illum repudiandae nisi ullam sit quibusdam facilis ipsa fugiat, ratione provident veniam totam tempora fugit reiciendis commodi earum voluptatum? Commodi magni illum atque illo?"},
+    {id:8, title:'pants', price:10 ,img:'images/pants.jfif',count:1, desc:"Lorem ipsum dolor sit amet consectetur adipisicing elit. Fuga, harum dolorem ipsam sint quibusdam sed quis aperiam nisi reprehenderit consequatur aliquid debitis, magni accusamus nihil et consequuntur similique asperiores. Dolorem ducimus modi libero, eligendi voluptas corporis. Deleniti dolorum ullam veniam!"},
 ];
 const $=document;
+const backBtn=$.querySelector('.back');
+const containerElem=$.querySelector('.container');
+let titleElem=$.querySelector('.product-title');
+let descElem=$.querySelector('.product-desc');
+let imgElem=$.querySelector('.product-image');
+function goBack(){
+    history.back();
+}
+backBtn.addEventListener('click',goBack);
+
+let params=new URLSearchParams(location.search);
+let paramsID= params.get('id');
+// paramsId=toString(paramsId); // type=object
+console.log(paramsID);
+function addProduct(){
+    let product= allProducts.find(function(pr){
+        return pr.id === Number(paramsID);
+    })
+    console.log(product);
+    if(product){
+        // containerElem.insertAdjacentHTML('beforeend','<div class="shoe-info"><h1 class="shoe-title">'+shoe.title +'</h1><p class="shoe-desc">'+ shoe.desc+'</p></div><img src="'+shoe.img +'" alt="" class="shoe-image">');
+        titleElem.innerHTML= product.title;
+        descElem.innerHTML= product.desc; 
+        imgElem.src= product.img;
+    }
+    else{
+        location.href="shoeproject.html";
+    }
+}
+addProduct();
+// update basket and basket icon and code for modal
+// 
 const productsElem= $.querySelector('.products');
 // const addtoCartBtns= $.querySelectorAll('.add');
 const basketElem= $.querySelector('.cart');
@@ -23,46 +56,6 @@ const productsFragment= $.createDocumentFragment();
 let continueBtnElem= $.querySelector('.continue');
 // local storage array
 let  localStorageArray=[];
-function addProducts(){
-    allProducts.forEach(addaProduct);
-}
-function addaProduct(product){
-    // create list of products// if Add To Cart button clicked// refactor by insertAdjacentHTML
-    // productsElem.insertAdjacentHTML('beforeend','<div class="product"><h1>'+product.title +'</h1><img src="'+product.img+'"><div class="lastrow"><p class="price">'+product.price+'</p><button class="add" onclick="addRowToBasket('+product.id+')">Add To Cart</button></div></div>')
-    let newProductTitle= $.createElement('h1') ;
-    newProductTitle.innerHTML= product.title;
-    let newProductimg= $.createElement('img');
-    newProductimg.src=product.img;
-    let newProductPrice= $.createElement('p');
-    newProductPrice.innerText=product.price+'$';
-    newProductPrice.classList.add('price');
-    let newdivElem= $.createElement('div') ;
-    newdivElem.classList.add('lastrow');
-    let newAddbtn= $.createElement('button');
-    newAddbtn.innerText='Add To Cart';
-    newAddbtn.classList.add('add');
-    let newProductdiv= $.createElement('div') ;
-    newProductdiv.classList.add('product');
-    // create more information link    
-    let moreINFOLink= $.createElement('a');
-    moreINFOLink.innerText='More Information';
-    moreINFOLink.classList.add('more-info');
-    moreINFOLink.href="product.html"+"?id="+product.id;
-    // appendChild
-    newdivElem.appendChild(newProductPrice);
-    newdivElem.appendChild(newAddbtn);
-    // append more information link
-    newdivElem.appendChild(moreINFOLink);
-    newProductdiv.appendChild(newProductTitle);
-    newProductdiv.appendChild(newProductimg);
-    newProductdiv.appendChild(newdivElem);
-    productsFragment.appendChild(newProductdiv);
-    // if Add To Cart button clicked
-    newAddbtn.addEventListener('click',function(){
-        addRowToBasket(product.id);
-    });
-    productsElem.appendChild(productsFragment);
-}
 // when Add To Cart btn is clicked
 function addRowToBasket(productID){
     let basketItems = JSON.parse(localStorage.getItem('productslocalstorage')) || [];
@@ -242,10 +235,5 @@ function displayBasket(){
         loadWindow=false;
     }      
 }
-// add all products to page
-addProducts();
 // display basket it may be empty or get data from localStorage
 displayBasket();
-
-
-
